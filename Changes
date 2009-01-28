@@ -1,0 +1,14 @@
+Changes
+=======
+
+- 0.03 Wed 09 May 2007
+  - Remove Twitter::Shell::Base
+  - Make Pod::Coverage happy
+
+- 0.02 Thu 12 Apr 2007
+  - Add brief summary to each command
+  - Add aliases to long commands: ft, pt
+  - Remove .swp files. ugh
+
+- 0.01 Thu 12 Apr 2007
+  - Released unto an unsuspecting world.

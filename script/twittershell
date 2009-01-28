@@ -1,0 +1,100 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use FindBin;
+use Getopt::Long;
+use Pod::Usage;
+use lib(File::Spec->catdir($FindBin::Bin, File::Spec->updir, 'lib'));
+
+use Twitter::Shell;
+
+{
+    my ($config, $version, $help);
+
+    # Default config file is expected to be at the current directory
+    $config = do {
+        my $file;
+        foreach my $suffix qw(yml yaml) {
+            my $test = "config.$suffix";
+            if (-f $test) {
+                $file = $test;
+                last;
+            }
+        }
+        $file;
+    };
+
+    if (! GetOptions(
+            '--config=s', => \$config,
+            '--version',  => \$version,
+            '--help'      => \$help
+    )) {
+        exit 1;
+    }
+
+    if ($version) {
+        print <<EOM;
+twittershell - Access Twitter From Your Command Line
+version: $Twitter::Shell::VERSION
+EOM
+        exit 0;
+    }
+
+    if ($help) {
+        pod2usage(-verbose => 2);
+    }
+
+    Twitter::Shell->new($config)->run;
+}
+
+__END__
+
+=head1 NAME
+
+twittershell - Access Twitter From Your Command Line
+
+=head1 SYNOPSIS
+
+   twittershell
+   twittershell -c config.yml
+   twittershell -v
+   twittershell -h
+
+   # In a config file, specify the following:
+   # config.yml
+   ---
+   username: your@email.address
+   password: password
+
+=head1 DESCRIPTION
+
+twittershell gives you access to Twitter from your command line
+
+=head1 OPTIONS
+
+=head2 --config | -c
+
+Specify the config file to read from. By default, twittershell attempts to read
+a config file named config.yml in the current directory
+
+=head2 --version | -v
+
+Print out the version and exit
+
+=head2 --help | -h
+
+Print out this help message and exit
+
+=head1 AUTHOR
+
+Gungho is Copyright (c) 2007 Daisuke Maki <daisuke@endeworks.jp> Endeworks Ltd.
+All rights reserved.
+
+=head1 LICENSE
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+See http://www.perl.com/perl/misc/Artistic.html
+
+=cut
